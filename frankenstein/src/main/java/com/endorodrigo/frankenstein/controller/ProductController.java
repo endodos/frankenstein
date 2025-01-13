@@ -2,9 +2,7 @@
 package com.endorodrigo.frankenstein.controller;
 
 import com.endorodrigo.frankenstein.dto.ApiResponse;
-import com.endorodrigo.frankenstein.entity.Customer;
 import com.endorodrigo.frankenstein.entity.Product;
-import com.endorodrigo.frankenstein.servicies.CustomerService;
 import com.endorodrigo.frankenstein.servicies.ProductService;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/product")
 @Slf4j
-public class ProductoController {
+public class ProductController {
     private final ProductService productService;
 
-    public ProductoController(ProductService productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 

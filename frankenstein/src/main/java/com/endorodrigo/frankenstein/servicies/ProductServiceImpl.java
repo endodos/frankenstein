@@ -1,19 +1,18 @@
 
 package com.endorodrigo.frankenstein.servicies;
 
-import com.endorodrigo.frankenstein.entity.Customer;
 import com.endorodrigo.frankenstein.entity.Product;
-import com.endorodrigo.frankenstein.repository.CustomerRepository;
+import com.endorodrigo.frankenstein.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductoServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService{
     
-    final private ProductService repository;
+    final private ProductRepository repository;
 
-    public ProductoServiceImpl(ProductService repository) {
+    public ProductServiceImpl(ProductRepository repository) {
         this.repository = repository;
     }
 
