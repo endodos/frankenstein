@@ -1,5 +1,6 @@
 package com.endorodrigo.frankenstein.controller;
 
+import com.endorodrigo.frankenstein.dto.ApiResponse;
 import com.endorodrigo.frankenstein.entity.Customer;
 import com.endorodrigo.frankenstein.servicies.CustomerService;
 import java.util.List;
@@ -20,22 +21,30 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    // Mostrar todos los clientes
     @GetMapping
-    public ResponseEntity<List<Customer>> listCustomers() {
+    public ResponseEntity<ApiResponse<List<Customer>>> listCustomers() {
         List<Customer> customers = customerService.findAll();
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+        ApiResponse<List<Customer>> response = new ApiResponse<>(
+                "success",
+                "Clientes obtenidos correctamente.",
+                customers
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // Guardar un nuevo cliente o actualizar uno existente
     @PostMapping
-    public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<ApiResponse<Customer>> saveCustomer(@RequestBody Customer customer) {
         Customer savedCustomer = customerService.save(customer);
-        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+        ApiResponse<Customer> response = new ApiResponse<>(
+                "success",
+                "Cliente guardado correctamente.",
+                savedCustomer
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping
-    public ResponseEntity<Customer> editCustomer(@RequestBody Customer data) {
+    public ResponseEntity<ApiResponse<Customer>> editCustomer(@RequestBody Customer data) {
         Optional<Customer> findUser = customerService.findById(data.getId());
         if (findUser.isPresent()) {
             findUser.get().setName(data.getName());
@@ -43,21 +52,42 @@ public class CustomerController {
             findUser.get().setCellNumber(data.getCellNumber());
             findUser.get().setAddress(data.getAddress());
             findUser.get().setStatus(data.isStatus());
-            return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(findUser.get()));
+            Customer updatedCustomer = customerService.save(findUser.get());
+            ApiResponse<Customer> response = new ApiResponse<>(
+                    "success",
+                    "Cliente actualizado correctamente.",
+                    updatedCustomer
+            );
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ApiResponse<Customer> response = new ApiResponse<>(
+                    "error",
+                    "Cliente no encontrado.",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 
-    // Eliminar un cliente
-    @DeleteMapping
-    public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Integer id) {
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Customer>> deleteCustomer(@PathVariable("id") Integer id) {
         Optional<Customer> customer = customerService.findById(id);
         if (customer.isPresent()) {
             customerService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            ApiResponse<Customer> response = new ApiResponse<>(
+                    "success",
+                    "Cliente eliminado correctamente.",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ApiResponse<Customer> response = new ApiResponse<>(
+                    "error",
+                    "Cliente no encontrado.",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 
