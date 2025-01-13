@@ -4,7 +4,7 @@
  */
 package com.endorodrigo.frankenstein.servicies;
 
-import com.endorodrigo.frankenstein.entities.Customer;
+import com.endorodrigo.frankenstein.entity.Customer;
 import java.util.List;
 import java.util.Optional;
 

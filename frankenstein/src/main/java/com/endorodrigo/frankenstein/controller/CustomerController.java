@@ -1,36 +1,56 @@
+package com.endorodrigo.frankenstein.controller;
 
-package com.endorodrigo.frankenstein.controllers;
-
-import com.endorodrigo.frankenstein.entities.Customer;
+import com.endorodrigo.frankenstein.entity.Customer;
+import com.endorodrigo.frankenstein.repository.CustomerRepository;
 import com.endorodrigo.frankenstein.servicies.CustomerService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/demo")
+@RequestMapping("/home")
+@Slf4j
 public class CustomerController {
-    final private CustomerService service;
 
-    public CustomerController(CustomerService service) {
-        this.service = service;
+    private CustomerService customerService;
+
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
     }
     
-    
-    @GetMapping("/customers")
-    public ResponseEntity getListCustomer(){
-        return ResponseEntity.ok(service.findAll());
+
+    // Mostrar todos los clientes
+    @GetMapping
+    public String listCustomers(Model model) {
+        model.addAttribute("customers", customerService.findAll());
+        model.addAttribute("customer", new Customer());
+        return "home";
     }
-    
-    @PostMapping("/crear/custumer")
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer ){
-         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(customer));
+
+    // Guardar un nuevo cliente o actualizar uno existente
+    @PostMapping
+    public String saveCustomer(@ModelAttribute Customer customer) {
+        customerService.save(customer);
+        log.info("=== creando customer ==");
+        log.info(customer.toString());
+        return "redirect:/home";
     }
-    
+
+    // Editar un cliente
+    @GetMapping("/edit/{id}")
+    public String editCustomer(@PathVariable("id") Integer id, Model model) {
+        Customer customer = customerService.findById(id).orElseThrow();
+        model.addAttribute("customer", customer);
+        model.addAttribute("customers", customerService.findAll());
+        return "customerForm";
+    }
+
+    // Eliminar un cliente
+    @GetMapping("/delete/{id}")
+    public String deleteCustomer(@PathVariable("id") Integer id) {
+        customerService.deleteById(id);
+        return "redirect:/customers";
+    }
 }

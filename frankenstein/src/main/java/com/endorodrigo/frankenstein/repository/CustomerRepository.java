@@ -1,7 +1,7 @@
 
-package com.endorodrigo.frankenstein.repositories;
+package com.endorodrigo.frankenstein.repository;
 
-import com.endorodrigo.frankenstein.entities.Customer;
+import com.endorodrigo.frankenstein.entity.Customer;
 import org.springframework.data.repository.CrudRepository;
 
 /**

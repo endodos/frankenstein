@@ -1,8 +1,8 @@
 
 package com.endorodrigo.frankenstein.servicies;
 
-import com.endorodrigo.frankenstein.entities.Customer;
-import com.endorodrigo.frankenstein.repositories.CustomerRepository;
+import com.endorodrigo.frankenstein.entity.Customer;
+import com.endorodrigo.frankenstein.repository.CustomerRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
