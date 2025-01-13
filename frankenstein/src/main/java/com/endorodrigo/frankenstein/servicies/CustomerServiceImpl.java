@@ -8,11 +8,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductoServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService{
     
     final private CustomerRepository repository;
 
-    public ProductoServiceImpl(CustomerRepository repository) {
+    public CustomerServiceImpl(CustomerRepository repository) {
         this.repository = repository;
     }
     
