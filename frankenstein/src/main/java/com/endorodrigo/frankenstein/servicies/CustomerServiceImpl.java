@@ -2,39 +2,39 @@
 package com.endorodrigo.frankenstein.servicies;
 
 import com.endorodrigo.frankenstein.entity.Customer;
-import com.endorodrigo.frankenstein.entity.Product;
 import com.endorodrigo.frankenstein.repository.CustomerRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductoServiceImpl implements ProductService{
+public class CustomerServiceImpl implements CustomerService{
     
-    final private ProductService repository;
+    final private CustomerRepository repository;
 
-    public ProductoServiceImpl(ProductService repository) {
+    public CustomerServiceImpl(CustomerRepository repository) {
         this.repository = repository;
     }
+    
 
     @Override
-    public List<Product> findAll() {
-        return (List<Product>) repository.findAll();
+    public List<Customer> findAll() {
+        return (List<Customer>) repository.findAll();
     }
 
     @Override
-    public Optional<Product> findById(Integer id) {
+    public Optional<Customer> findById(Integer id) {
         return  repository.findById(id);
     }
 
     @Override
-    public Product save(Product product) {
-        return repository.save(product);
+    public Customer save(Customer customer) {
+        return repository.save(customer);
     }
 
     @Override
-    public Optional<Product> deleteById(Integer id) {
-        Optional<Product> findUser = repository.findById(id);
+    public Optional<Customer> deleteById(Integer id) {
+        Optional<Customer> findUser = repository.findById(id);
         if (findUser.isPresent()) {
             repository.deleteById(id);
             return findUser;
@@ -42,5 +42,4 @@ public class ProductoServiceImpl implements ProductService{
         return  Optional.empty();
     }
     
-
 }
